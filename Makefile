@@ -14,10 +14,10 @@ lib := 	\
 	version.o
 
 test : test.o $(lib)
-	$(CC) -o 
+	$(CC) -o $@ $^
 
 binaries : test
 
 
 clean:
-	rm -r *.o tcp_rr tcp_stream
+	rm -r *.o test

@@ -6,7 +6,7 @@ int main()
 {
 	struct cpuinfo *cpus;
 	int max_cpus = 1024;
-	get_cpuinfo(cpus, max_cpu);
+	get_cpuinfo(cpus, max_cpus);
 	show_version();
 	return 0;
 }
