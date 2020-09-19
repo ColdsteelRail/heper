@@ -6,8 +6,7 @@ all : binaries
 # -Werror stop complie if warning occurs
 # -g contain debug information in excutable program
 # -D_GUN_SOURCE then you can use GUN entensions or non-standard functionality
-# -v print information of cmplier and compling
-CFLAGS = -std=c99 -Wall -Werror -03 -g -D_GNU_SOURCE -v
+CFLAGS = -std=c99 -Wall -Werror -O3 -g -D_GNU_SOURCE
 
 lib := 	\
 	cpuinfo.o \

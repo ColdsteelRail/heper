@@ -11,7 +11,7 @@ static const char *ltrim(const char *str)
         return str;
 }
 
-static const char* rtrim(const char *str)
+static void rtrim(char *str)
 {
         char *p = str + strlen(str) - 1;
         while(p >= str && isspace(*p))
@@ -53,3 +53,47 @@ int get_cpuinfo(struct cpuinfo *cpus, int max_cpus)
         fclose(f);
         return n;
 }
+
+void show_cpuinfo(void)
+{
+	int i, n;
+	struct cpuinfo *cpus;
+	
+	cpus = calloc(1024, sizeof(struct cpuinfo));
+	if(!cpus) {
+		printf("calloc cpus\n");
+		exit(1);
+	}
+	n = get_cpuinfo(cpus, 1024);
+	if(n == -1) {
+		printf("get_cpuinfo error\n");
+		exit(1);
+	}
+	if(n == 0) {
+		printf("no cpu found in /proc/cpuinfo\n");
+		exit(1);
+	}
+	
+	for(i = 0; i < n; i++) {
+		printf("cpu%d info : \n processor physical_id siblings core_id cpu_cores\n", i + 1);
+		printf("%d\t%d\t%d\t%d\t%d\n", cpus[i].processor,
+                         cpus[i].physical_id, cpus[i].siblings, cpus[i].core_id,
+                         cpus[i].cpu_cores);	
+	}
+	free(cpus);	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

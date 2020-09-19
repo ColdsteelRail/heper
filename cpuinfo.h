@@ -10,5 +10,6 @@ struct cpuinfo {
 };
 
 int get_cpuinfo(struct cpuinfo *cpus, int max_cpus);
+void show_cpuinfo(void);
 
 #endif
