@@ -75,12 +75,15 @@ void show_cpuinfo(void)
 	}
 	
 	for(i = 0; i < n; i++) {
-		printf("cpu%d info : \n processor physical_id siblings core_id cpu_cores\n", i + 1);
-		printf("%d\t%d\t%d\t%d\t%d\n", cpus[i].processor,
-                         cpus[i].physical_id, cpus[i].siblings, cpus[i].core_id,
-                         cpus[i].cpu_cores);	
+		printf("cpu%d info :\t\n "
+                        "processor :\t%d\n"
+                        "siblings :\t%d\n"
+                        "core_id :\t%d\n"
+                        "cpu_cores : %d\n",
+                        i + 1, cpus[i].processor, cpus[i].physical_id,
+                        cpus[i].siblings, cpus[i].core_id, cpus[i].cpu_cores);
 	}
-	free(cpus);	
+	free(cpus);
 }
 
 
