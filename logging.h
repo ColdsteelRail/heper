@@ -3,8 +3,8 @@
 
 struct callbacks;
 
-void logging_init(struct calbacks *);
-void logging_exit(struct calbacks *);
+void logging_init(struct callbacks *);
+void logging_exit(struct callbacks *);
 
 #define PRINT(cb, key, value_fmt, args...) \
         (cb)->print((cb)->logger, key, value_fmt, ##args)
@@ -19,7 +19,7 @@ void logging_exit(struct calbacks *);
         (cb)->log_info((cb)->logger, __FILE__, __LINE__, __func__, fmt, ##args)
 
 #define PLOG_FATAL(cb, fmt, args...) \
-        LOG_FATAL(cb, fmt ": %s", ##args, stderr(errno))
+        LOG_FATAL(cb, fmt ": %s", ##args, strerror(errno))
 #define PLOG_ERROR(cb, fmt, args...) \
         LOG_ERROR(cb, fmt ": %s", ##args, strerror(errno))
 #define CHECK(cb, cond, fmt, args...) \

@@ -25,7 +25,7 @@ void parse_percentiles(char *arg, void *out, struct callbacks *cb)
                 if (val < 0 || val > 100)
                         LOG_FATAL(cb, "%ld percentile dosen't exist", val);
                 p->chosen[val] = true;
-                LOG_INFO(Ccb, "%ld percentile is chosen", val);
+                LOG_INFO(cb, "%ld percentile is chosen", val);
                 if(*endptr == '\0')
                         break;
                 arg = endptr + 1;

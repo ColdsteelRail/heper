@@ -1,23 +1,21 @@
 #include "logging.h"
-#include "lib.h"
 #include <errno.h>
+#include <libgen.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdarg.h>
-#include <time.h>
-/*linux*/
-#include <libgen.h>
+#include <string.h>
 #include <sys/syscall.h>
-#include <sys/ustname.h>
+#include <sys/utsname.h>
+#include <time.h>
 #include <unistd.h>
-#include <libgen.h>
-
+#include "lib.h"
 
 static int stdout_lines;
 static FILE* log_file;
 static bool g_logtostderr;
 
-enum LOG_LEVEL { FATAL, ERROR, WANNING, INFO };
+enum LOG_LEVEL { FATAL, ERROR, WARNING, INFO };
 
 static void print(void *logger, const char *key, const char *value_fmt, ...)
 {
@@ -40,29 +38,29 @@ static void print(void *logger, const char *key, const char *value_fmt, ...)
 static void open(void)
 {
         char *hostname, *user_name, path[1024];
-        struct ntsname un;
+        struct utsname un;
         struct timespec ts;
         struct tm tm;
 
         uname(&un);
-        hsotname = un.nodename;
+        hostname = un.nodename;
         if (!hostname)
                 hostname = "_";
         user_name = getlogin();
         if (!user_name)
                 user_name = "_";
         clock_gettime(CLOCK_REALTIME, &ts);
-        localtime_r(&ts.tv_Sec, &tm);
+        localtime_r(&ts.tv_sec, &tm);
 
         snprintf(path, sizeof(path),
                 "%s.%s.%s.%04d%02d%02d-%02d%02d%02d.%d.log",
                 program_invocation_short_name, hostname, user_name,
-                1900 + tm.tm.year, 1 + tm.tm_mon, tm.tm_mday, tm.tm_hour,
+                1900 + tm.tm_year, 1 + tm.tm_mon, tm.tm_mday, tm.tm_hour,
                 tm.tm_min, tm.tm_sec, getpid());
         
         if(log_file)
                 fclose(log_file);
-        log_file = foprn(path, "w");
+        log_file = fopen(path, "w");
 }
 
 static void close_log(void)
@@ -126,7 +124,7 @@ static void logging(const char *file, int line, const char *func,
                 thread_id = getpid();
 
         path = strdup(file);
-        fprintf(g_logtostderr ? stderr : logfile,
+        fprintf(g_logtostderr ? stderr : log_file,
                 "%c%02d%02d %02d:%02d:%02d.%06ld %3d %6d %s:%d] %s: %s\n",
                 level_char, tm.tm_mon, tm.tm_mday, tm.tm_hour, tm.tm_min,
                 tm.tm_sec, ts.tv_nsec / 1000, stdout_lines, thread_id,
@@ -155,7 +153,7 @@ static void log_fetal(void *logger, const char *file, int line,
 {
         va_list argp;
 
-        va_Start(argp, format);
+        va_start(argp, format);
         logging(file, line, function, FATAL, format, argp);
         va_end(argp);
 }
@@ -197,9 +195,9 @@ static void logtostderr(void *logger)
 
 void logging_init(struct callbacks *cb)
 {
-        open_log();
+        open();
         cb->logger = NULL;
-        cb->print = print();
+        cb->print = print;
         cb->log_fatal = log_fetal;
         cb->log_error = log_error;
         cb->log_warn = log_warn;
