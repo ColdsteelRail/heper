@@ -10,7 +10,9 @@ CFLAGS = -std=c99 -Wall -Werror -O3 -g -D_GNU_SOURCE
 
 lib := 	\
 	cpuinfo.o \
-	version.o
+	version.o \
+	percentiles.o \
+	logging.o
 
 test : test.o $(lib)
 	$(CC) -o $@ $^

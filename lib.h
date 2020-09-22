@@ -54,7 +54,7 @@ struct options {
         bool nonblocking;
 
         double interval;
-        longlong max_pacing_rate;
+        long long max_pacing_rate;
 
         const char *local_host;
         const char *host;
@@ -69,7 +69,7 @@ struct options {
 
         int request_size;
         int respose_size;
-        // struct percentiles percentiles;
+        struct percentiles percentiles;
 };
 
 
