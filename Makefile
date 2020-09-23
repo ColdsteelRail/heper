@@ -21,4 +21,4 @@ binaries : test
 
 
 clean:
-	rm -r *.o test
+	rm -r *.o test *.log
