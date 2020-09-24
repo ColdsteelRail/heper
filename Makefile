@@ -14,7 +14,7 @@
 # BIN := test_log
 
 # # compile options
-# CFLAGS = -std=c99 -Wall -Werror -O3 -g -D_GNU_SOURCE
+# CFLAGS = -std$=c99 -Wall -Werror -O3 -g -D_GNU_SOURCE
 
 # export CC ROOT_DIR OBJ_DIR BIN_DIR OBJ BIN
 
@@ -43,8 +43,14 @@ lib := 	\
 	percentiles.o \
 	logging.o
 
-export ROOT_DIR LIB_DIR TEST_DIR lib CFLAGS
+export ROOT_DIR LIB_DIR TESTS_DIR lib CFLAGS
 
 $(LIB_DIR) : RUN
 	make -C $@
 RUN:
+
+clean:
+	rm -rf $(TESTS_DIR)/*.o \
+	       $(TESTS_DIR)/*.log \
+	       $(TESTS_DIR)/test_log \
+	       $(LIB_DIR)/*.o
