@@ -1,7 +1,7 @@
 # .PHONY:clean all
 # CC = gcc
 
-# ROOT_DIR=$(shell pwd)
+#ROOT_DIR=$(shell pwd)
 # OBJ_DIR=$(ROOT_DIR)/debug/obj
 # BIN_DIR=$(ROOT_DIR)/debug/bin
 # OBJ := 	\
@@ -28,6 +28,6 @@
 # RUN:
 
 MAKE_SUBDIR := library
-MAKE_SUBDIR : RUN
+$(MAKE_SUBDIR) : RUN
 	make -C $@	
 RUN:

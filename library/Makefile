@@ -5,17 +5,20 @@
 # -g contain debug information in excutable program
 # -D_GUN_SOURCE then you can use GUN entensions or non-standard functionality
 CFLAGS = -std=c99 -Wall -Werror -O3 -g -D_GNU_SOURCE
-
+LIB_DIR = $(shell pwd)
 lib := 	\
 	cpuinfo.o \
 	version.o \
 	percentiles.o \
 	logging.o
 
-export lib
+export lib CFLAGS LIB_DIR
+
 
 MAKE_SUBDIR := tests
-MAKE_SUBDIR : RUN
+
+make_lib : $(lib) $(MAKE_SUBDIR)
+$(MAKE_SUBDIR) : RUN
 	make -C $@	
 RUN:
 
