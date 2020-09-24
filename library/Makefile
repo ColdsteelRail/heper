@@ -14,11 +14,11 @@ lib := 	\
 	percentiles.o \
 	logging.o
 
-test_log : test.o $(lib)
+test_log : test_log.o $(lib)
 	$(CC) -o $@ $^
 
 binaries : test_log
 
 
 clean:
-	rm -r *.o test *.log
+	rm -r *.o test_log *.log
