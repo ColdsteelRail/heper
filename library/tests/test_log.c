@@ -1,7 +1,7 @@
-#include "version.h"
-#include "cpuinfo.h"
-#include "logging.h"
-#include "lib.h"
+#include "../version.h"
+#include "../cpuinfo.h"
+#include "../logging.h"
+#include "../lib.h"
 #include <stdlib.h>
 #include <stdio.h>
 

@@ -28,6 +28,6 @@
 # RUN:
 
 MAKE_SUBDIR := library
-
-MAKE_SUBDIR :
+MAKE_SUBDIR : RUN
 	make -C $@	
+RUN:

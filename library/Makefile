@@ -1,5 +1,3 @@
-all : binaries
-
 
 # -std=c99 complie option of gcc is c89
 # -Wall permit for gcc print warnning messages
@@ -14,11 +12,12 @@ lib := 	\
 	percentiles.o \
 	logging.o
 
-test_log : test_log.o $(lib)
-	$(CC) -o $@ $^
+export lib
 
-binaries : test_log
-
+MAKE_SUBDIR := tests
+MAKE_SUBDIR : RUN
+	make -C $@	
+RUN:
 
 clean:
 	rm -r *.o test_log *.log
