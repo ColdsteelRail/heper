@@ -1,6 +1,6 @@
 tests: test_log
 
-test_log: test_log.o ../cpuinfo.o ../version.o ../logging.o
+test_log: test_log.o $(lib)
 	$(CC) -o $@ $^
 
 clean:

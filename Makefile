@@ -1,34 +1,8 @@
-# .PHONY:clean all
-# CC = gcc
-
-#ROOT_DIR=$(shell pwd)
-# OBJ_DIR=$(ROOT_DIR)/debug/obj
-# BIN_DIR=$(ROOT_DIR)/debug/bin
-# OBJ := 	\
-# 	cpuinfo.o \
-# 	version.o \
-# 	percentiles.o \
-# 	logging.o
-# SUB_DIR := library
-# # test
-# BIN := test_log
-
-# # compile options
-# CFLAGS = -std$=c99 -Wall -Werror -O3 -g -D_GNU_SOURCE
-
-# export CC ROOT_DIR OBJ_DIR BIN_DIR OBJ BIN
-
-# all : CHECKDIR $(SUB_DIR)
-# CHECKDIR :
-# 	mkdir -p $(SUB_DIR) $(BIN_DIR)
-
-# $(SUB_DIR) : RUN
-# 	make -C $@
-
-# RUN:
 ROOT_DIR = $(shell pwd)
 LIB_DIR = $(ROOT_DIR)/library
-TESTS_DIR= $(LIB_DIR)/tests
+TESTS_DIR = $(LIB_DIR)/tests
+BIN_DIR = $(ROOT_DIR)/debug/bin
+OBJ_DIR = $(ROOT_DIR)/debug/obj
 
 CFLAGS = -std=c99 -Wall -Werror -O3 -g -D_GNU_SOURCE
 # -std=c99 complie option of gcc is c89
@@ -38,12 +12,18 @@ CFLAGS = -std=c99 -Wall -Werror -O3 -g -D_GNU_SOURCE
 # -D_GUN_SOURCE then you can use GUN entensions or non-standard functionality
 
 lib := 	\
-	cpuinfo.o \
-	version.o \
-	percentiles.o \
-	logging.o
+	$(LIB_DIR)/cpuinfo.o \
+	$(LIB_DIR)/version.o \
+	$(LIB_DIR)/percentiles.o \
+	$(LIB_DIR)/logging.o
 
-export ROOT_DIR LIB_DIR TESTS_DIR lib CFLAGS
+export ROOT_DIR \
+	   IB_DIR \
+	   TESTS_DI \
+	   lib \
+	   BIN_DIR \
+	   OBJ_DIR \
+	   CFLAGS
 
 $(LIB_DIR) : RUN
 	make -C $@
