@@ -18,13 +18,16 @@ lib := 	\
 	$(LIB_DIR)/logging.o \
 	$(LIB_DIR)/numlist.o
 
+ext-libs := -lm -lpthread -lrt
+
 export ROOT_DIR \
 	   IB_DIR \
-	   TESTS_DI \
+	   TESTS_DIR \
 	   lib \
 	   BIN_DIR \
 	   OBJ_DIR \
-	   CFLAGS
+	   CFLAGS \
+	   ext-libs
 
 $(LIB_DIR) : RUN
 	make -C $@
@@ -33,5 +36,5 @@ RUN:
 clean:
 	rm -rf $(TESTS_DIR)/*.o \
 	       $(TESTS_DIR)/*.log \
-	       $(TESTS_DIR)/test_log \
+	       $(TESTS_DIR)/*_test_e \
 	       $(LIB_DIR)/*.o

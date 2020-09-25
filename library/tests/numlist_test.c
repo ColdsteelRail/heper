@@ -2,12 +2,11 @@
 #include "../lib.h"
 #include "../logging.h"
 #include <stdlib.h>
-
+#include <stdio.h>
 #define NUM 100000
 
 int main() {
         int i;
-        double val = 0.0;
         struct numlist *lst, *tail;
         struct callbacks *cb;
 
@@ -20,18 +19,18 @@ int main() {
             numlist_add(lst, i);
         
         for (i = NUM / 2; i < NUM; i++)
-            numlist_add(lst, i);
+            numlist_add(tail, i);
         
-        printf("size of lst: %d\n", numlist_size(lst));
-        printf("min of lst: %d\n", numlist_min(lst));
-        printf("max of lst: %d\n", numlist_max(lst));
-        printf("mean of lst: %d\n", numlist_mean(lst));
-        printf("stddev of lst: %02d\n", numlist_stddev(lst));
+        printf("size of lst: %d\n",(int)numlist_size(lst));
+        printf("min of lst: %04f\n", numlist_min(lst));
+        printf("max of lst: %04f\n", numlist_max(lst));
+        printf("mean of lst: %04f\n", numlist_mean(lst));
+        printf("stddev of lst: %04f\n", numlist_stddev(lst));
 
         printf("executing numlist_concat(lst, tail)...\n");
         numlist_concat(lst, tail);
 
-        printf("76% of new lst: %02d\n", numlist_percentiles(lst, 76));
+        printf("76 percentiles of new lst: %04f\n", numlist_percentiles(lst, 76));
         
         return 0;
 }

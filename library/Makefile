@@ -1,4 +1,4 @@
-make_lib : $(lib) $(TESTS_DIR)
+make_lib : $(lib) $(TESTS_DIR) RUN
 
 $(TESTS_DIR) : RUN
 	make -C $@	

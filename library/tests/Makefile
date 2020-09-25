@@ -1,10 +1,12 @@
-tests: test_log
+tests: \
+	logging_test_e \
+	numlist_test_e
 
-test_log: test_log.o $(lib)
-	$(CC) -o $@ $^
+logging_test_e: logging_test.o $(lib)
+	$(CC) -o $@ $^ $(ext-libs)
 
-test_numlist: test_numlist.o $(lib)
-	$(CC) -o $@ $^
+numlist_test_e: numlist_test.o $(lib)
+	$(CC) -o $@ $^ $(ext-libs)
 
 clean:
 	rm -rf *.o ../*.o test_log *.log
