@@ -16,7 +16,7 @@ lib := 	\
 	$(LIB_DIR)/version.o \
 	$(LIB_DIR)/percentiles.o \
 	$(LIB_DIR)/logging.o \
-	$(LIB_DIR)/numlists.o
+	$(LIB_DIR)/numlist.o
 
 export ROOT_DIR \
 	   IB_DIR \

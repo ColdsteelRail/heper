@@ -3,8 +3,8 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <lib.h>
-#include <logging.h>
+#include "lib.h"
+#include "logging.h"
 
 #define MEMBLOCK_SIZE 500
 
@@ -73,11 +73,13 @@ void numlist_concat(struct numlist *lst, struct numlist *tail) {
 }
 
 #define for_each_memblock(blk, lst) \
-        for (blk = lst->head; blk; blk = blk->next))
+        for (blk = lst->head; blk; blk = blk->next)
+
 #define for_each_double(n, blk) \
         for (n = blk->data; n < blk->data + blk->size; n++)
+
 #define for_each(n, blk, lst) \
-        for_each_memblok(blk, lst) for_each_double(n, blk)
+        for_each_memblock(blk, lst) for_each_double(n, blk)
 
 size_t numlist_size(struct numlist *lst) {
         struct memblock *blk;
@@ -152,7 +154,7 @@ double numlist_percentiles(struct numlist *lst, int percentile) {
         size = numlist_size(lst);
         if (size == 0)
                 return NAN;
-        value = malloc(sizeof(double), size);
+        value = malloc(sizeof(double)*size);
         for_each(n, blk, lst)
                 value[i++] = *n;
 
