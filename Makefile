@@ -1,8 +1,9 @@
 ROOT_DIR = $(shell pwd)
 LIB_DIR = $(ROOT_DIR)/library
 TESTS_DIR = $(LIB_DIR)/tests
-BIN_DIR = $(ROOT_DIR)/debug/bin
-OBJ_DIR = $(ROOT_DIR)/debug/obj
+DEBUG_DIR = $(ROOT_DIR)/debug
+BIN_DIR = $(DEBUG_DIR)/bin
+OBJ_DIR = $(DEBUG_DIR)/obj
 
 CFLAGS = -std=c99 -Wall -Werror -O3 -g -D_GNU_SOURCE
 # -std=c99 complie option of gcc is c89
@@ -24,6 +25,7 @@ export ROOT_DIR \
 	   IB_DIR \
 	   TESTS_DIR \
 	   lib \
+	   DEBUG_DIR \
 	   BIN_DIR \
 	   OBJ_DIR \
 	   CFLAGS \
