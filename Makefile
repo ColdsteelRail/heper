@@ -34,7 +34,4 @@ $(LIB_DIR) : RUN
 RUN:
 
 clean:
-	rm -rf $(TESTS_DIR)/*.o \
-	       $(TESTS_DIR)/*.log \
-	       $(TESTS_DIR)/*_test_e \
-	       $(LIB_DIR)/*.o
+	rm -rf $(OBJ_DIR)/* $(BIN_DIR)/*
