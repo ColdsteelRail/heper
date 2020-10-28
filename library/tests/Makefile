@@ -12,7 +12,7 @@ numlist_test_e: numlist_test.o $(lib)
 	$(CC) -o $@ $^ $(ext-libs)
 
 mkdir_obj_bin:
-	mkdir $(DEBUG_DIR) \
+	mkdir -p $(DEBUG_DIR) \
 	      $(OBJ_DIR) \
 	      $(BIN_DIR)
 
