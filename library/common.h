@@ -60,7 +60,12 @@ static inline int flows_in_thread(int num_flows, int num_threads, int tid)
         return flows_in_this_thread;
 }
 
-struct addrinfo *do_getaddrinfo(const char *host, const char *post, int falgs,
+/* getaddrinfo函数能够处理名字到地址以及服务到端口这两种转换
+ * bind host with ip adress and port 
+ * example: localhost : 127.0.0.1 8000
+ * @host: host name or ip adress
+*/
+struct addrinfo *do_getaddrinfo(const char *host, const char *port, int falgs,
                                 const struct options *opts,
                                 struct callbacks *cb);
 
