@@ -36,13 +36,13 @@ static const struct rate_conversion conversions[] = {
         {  NULL, 0 }
 };
 
-struct addrinfo *do_getaddrinfo(const char *host, const char *port, int falgs,
+struct addrinfo *do_getaddrinfo(const char *host, const char *port, int flags,
                                 const struct options *opts,
                                 struct callbacks *cb)
 {
         struct addrinfo hints, *result;    /* hints: determine how socket works */
                                            /* results: addrinfo pointer list */
-        memset(&hints, sizeof(struct addrinfo));
+        memset(&hints,0, sizeof(struct addrinfo));
         if (opts->ipv4 && !opts->ipv6)
                 hints.ai_family = AF_INET; /* Adress family: IPv4 or IPv6*/
         else if (opts->ipv6 && !opts->ipv4)
@@ -50,7 +50,7 @@ struct addrinfo *do_getaddrinfo(const char *host, const char *port, int falgs,
         else
                 hints.ai_family = AF_UNSPEC;
         hints.ai_socktype = SOCK_STREAM;   /* Stream socket: TCP */
-        hints.ai_flags = flag;             /* AI_PASSIVE: Socket used to bind and listen */
+        hints.ai_flags = flags;             /* AI_PASSIVE: Socket used to bind and listen */
         hints.ai_protocol = 0;             /* Any protocol */
 
         LOG_INFO(cb, "before getaddrinfo");
@@ -77,7 +77,7 @@ long long parse_rate(const char *str, struct callbacks *cb)
                 LOG_FATAL(cb, "no digits were found");
         if (suffix[0] == '\0')  /* end of str */
                 return val;
-        for (conv = conversions[0]; conv->prefix; conv++) {
+        for (conv = conversions; conv->prefix; conv++) {
                 if (strncmp(suffix, conv->prefix, strlen(conv->prefix)) == 0)
                         return val * conv->bytes_per_seconds;
         }
@@ -97,7 +97,7 @@ void set_reuseport(int fd, struct callbacks *cb)
 
 void set_reuseaddr(int fd, int on, struct callbacks *cb)
 {
-        if (setsocketopt(fd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)))
+        if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)))
                 PLOG_ERROR(cb, "setsockopt(SO_REUSEADDR)");
 }
 
@@ -107,7 +107,7 @@ void set_min_rto(int fd, int min_rto_ms, struct callbacks *cb)
 #ifndef TCP_MIN_RTO
 #define TCP_MIN_RTO 1713
 #endif
-        if (setsockopt(fd, SOL_TCP, TCP_MIN_RTO, &min_rto, size_of(min_rto)))
+        if (setsockopt(fd, SOL_TCP, TCP_MIN_RTO, &min_rto, sizeof(min_rto)))
                 PLOG_ERROR(cb, "setsockopt(TCP_MIN_RTO)");
 }
 
@@ -161,7 +161,7 @@ void fill_random(char *buf, int size)
 {
         int fd, chunk, done = 0;
 
-        fd = open("/dev/urandom", O_EDONLY);
+        fd = open("/dev/urandom", O_RDONLY);
         if (fd == -1)
                 return; // not PLOG_FATAL
         while (done < size) {
@@ -183,16 +183,28 @@ int do_close(int fd)
         }
 }
 
+int do_connect(int s, const struct sockaddr *addr, socklen_t addr_len)
+{
+	for (;;) {
+		int ret = connect(s, addr, addr_len);
+		if (ret == -1 && (errno == EINTR || errno == EALREADY))
+			continue;
+		if (ret == -1 && errno == EISCONN)
+			return 0;
+		return ret;
+	}
+}
+
 struct addrinfo *copy_addrinfo(struct addrinfo *in)
 {
         struct addrinfo *out = calloc(1, sizeof(*in) + in->ai_addrlen);
         out->ai_flags = in->ai_flags;
         out->ai_family = in->ai_family;
-        out->ai_socktype = in->socktype;
+        out->ai_socktype = in->ai_socktype;
         out->ai_protocol = in->ai_protocol;
         out->ai_addrlen = in->ai_addrlen;
         out->ai_addr = (struct sockaddr *)(out + 1); // add 1 to pointer, its addition is the size
-        memcpy(out->ai_Addr, in->ai_addr, in->ai_addrlen);
+        memcpy(out->ai_addr, in->ai_addr, in->ai_addrlen);
         return out;
 }
 
@@ -207,7 +219,7 @@ void reset_port(struct addrinfo *ai, int port, struct callbacks *cb)
 }
 
 int try_connect(const char *host, const char *port, struct addrinfo **ai,
-                struct opstions *opts, struct callbacks *cb)
+                struct options *opts, struct callbacks *cb)
 {
         struct addrinfo *result, *rp;
         int sfd = 0, allowed_retry = 30;
@@ -248,7 +260,7 @@ retry:
 void pare_all_samples(char *arg, void *out, struct callbacks *cb)
 {
         if (arg)
-                *(const cahr **)out = arg;
+                *(const char **)out = arg;
         else
                 *(const char **)out = "sample.csv";
 }
@@ -266,8 +278,8 @@ static void suicide_timeout_handler(int sig, siginfo_t *sig_info, void *arg)
 
 int create_suicide_timeout(int sec_to_suicide)
 {
-        timeer_t timerid;
-        struct sigenvent sev;
+        timer_t timerid;
+        struct sigevent sev;
         sigset_t mask;
         struct itimerspec its;
         struct sigaction sa;
@@ -288,8 +300,8 @@ int create_suicide_timeout(int sec_to_suicide)
 
         sev.sigev_notify = SIGEV_SIGNAL;
         sev.sigev_signo = SIGRTMIN;
-        sev.sigev_value.sival_ptr = &timer;
-        if (timer_create(CLOCK_REALTIME, &sev, timerid) == -1) {
+        sev.sigev_value.sival_ptr = &timerid;
+        if (timer_create(CLOCK_REALTIME, &sev, &timerid) == -1) {
                 perror("timer_create");
                 return -1;
         }

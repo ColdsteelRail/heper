@@ -39,9 +39,9 @@ static inline void epoll_ctl_or_die(int epfd, int op, int fd,
                 PLOG_FATAL(cb, "epoll_ctl");
 }
 
-static inline void epoll_del_or_err(ine epfd, int fd, struct callbacks *cb)
+static inline void epoll_del_or_err(int epfd, int fd, struct callbacks *cb)
 {
-        if (epoll_ctl(epfd, EPOOL_CTL_DEL, fd, NULL))
+        if (epoll_ctl(epfd, EPOLL_CTL_DEL, fd, NULL))
                 PLOG_FATAL(cb, "epoll_ctl");
 }
 
@@ -83,11 +83,11 @@ int do_close(int fd);
 int do_connect(int s, const struct sockaddr *addr, socklen_t addr_len);
 struct addrinfo *copy_addrinfo(struct addrinfo *in);
 void reset_port(struct addrinfo *ai, int port, struct callbacks *cb);
-int try_connect(const char *host, const char *port, struct addrinfo **ai
+int try_connect(const char *host, const char *port, struct addrinfo **ai,
                 struct options *opts, struct callbacks *cb);
 void parse_all_samples(char *arg, void *out, struct callbacks *cb);
 void parse_max_pacing_rate(char *arg, void *out, struct callbacks *cb);
 
-int craete_suicide_timeout(int sec_to_suicide);
+int create_suicide_timeout(int sec_to_suicide);
 
 #endif
