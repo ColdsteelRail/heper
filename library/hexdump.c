@@ -16,8 +16,8 @@ char *hexdump(char *in, size_t in_len, char *out, size_t out_len)
                 for (i = 0; i < WIDTH; i++) {
                         if (row * WIDTH + i < in_len) {
                                 c = in[row * WIDTH + i];
-                                row_buf[i * 3] = c / 16;
-                                row_buf[i * 3 + 1] = c % 16;
+                                row_buf[i * 3] = chr[c / 16];
+                                row_buf[i * 3 + 1] = chr[c % 16];
                                 row_buf[i * 3 + 2] = ' ';
                                 row_buf[3 * WIDTH + i] = isprint(c) ? c : '.';
                         } else {
@@ -28,7 +28,7 @@ char *hexdump(char *in, size_t in_len, char *out, size_t out_len)
                         }
                 }
                 row_buf[WIDTH * 3 + WIDTH] = '\n';
-                if (sizeof(row_buf) * (row + 1) >= out_len);
+                if (sizeof(row_buf) * (row + 1) >= out_len)
                         return NULL;
                 memcpy(out + sizeof(row_buf) * row, row_buf, sizeof(row_buf));
         }
