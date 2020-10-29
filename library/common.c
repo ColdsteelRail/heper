@@ -88,7 +88,7 @@ long long parse_rate(const char *str, struct callbacks *cb)
 void set_reuseport(int fd, struct callbacks *cb)
 {
         int optval = 1; /* get or set socket options, here set SOL_REUSEADDR = 1 */
-#ifndef SO_REUSEPORT    /* SOL_SOCKET is general options of socket, other cases, canbe SO_TCP SO_IP */
+#ifndef SO_REUSEPORT    /* SOL_SOCKET is general options of socket, other cases, canbe SOL_TCP SOL_IP */
 #define SO_REUSEPORT 15 /* SO_REUSEADDR: allow ip address and port being reused */
 #endif
         if (setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, &optval, sizeof(optval)))

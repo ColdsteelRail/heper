@@ -1,6 +1,7 @@
 tests: \
 	logging_test_e \
 	numlist_test_e \
+	common_test_e \
 	mkdir_obj_bin \
 	mv_obj \
 	mv_bin
@@ -9,6 +10,9 @@ logging_test_e: logging_test.o $(lib)
 	$(CC) -o $@ $^ $(ext-libs)
 
 numlist_test_e: numlist_test.o $(lib)
+	$(CC) -o $@ $^ $(ext-libs)
+
+numlist_test_e: common_test.o $(lib)
 	$(CC) -o $@ $^ $(ext-libs)
 
 mkdir_obj_bin:

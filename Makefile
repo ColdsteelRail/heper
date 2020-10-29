@@ -17,7 +17,8 @@ lib := 	\
 	$(LIB_DIR)/version.o \
 	$(LIB_DIR)/percentiles.o \
 	$(LIB_DIR)/logging.o \
-	$(LIB_DIR)/numlist.o
+	$(LIB_DIR)/numlist.o \
+	$(LIB_DIR)/common.o
 
 ext-libs := -lm -lpthread -lrt
 
