@@ -91,8 +91,14 @@ void set_reuseport(int fd, struct callbacks *cb)
 #ifndef SO_REUSEPORT    /* SOL_SOCKET is general options of socket, other cases, canbe SO_TCP SO_IP */
 #define SO_REUSEPORT 15 /* SO_REUSEADDR: allow ip address and port being reused */
 #endif
-        if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)))
-                PLOG_FATAL(cb, "setsockopt(SO_REUSEADDR");
+        if (setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, &optval, sizeof(optval)))
+                PLOG_ERROR(cb, "setsockopt(SO_REUSEADDR");
+}
+
+void set_reuseaddr(int fd, int on, struct callbacks *cb)
+{
+        if (setsocketopt(fd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)))
+                PLOG_ERROR(cb, "setsockopt(SO_REUSEADDR)");
 }
 
 void set_min_rto(int fd, int min_rto_ms, struct callbacks *cb)
@@ -101,8 +107,8 @@ void set_min_rto(int fd, int min_rto_ms, struct callbacks *cb)
 #ifndef TCP_MIN_RTO
 #define TCP_MIN_RTO 1713
 #endif
-        if (setsockopt(fd, SO_TCP, TCP_MIN_RTO, &min_rto, size_of(min_rto)))
-                PLOG_FATAL(cb, "setsockopt(TCP_MIN_RTO)");
+        if (setsockopt(fd, SOL_TCP, TCP_MIN_RTO, &min_rto, size_of(min_rto)))
+                PLOG_ERROR(cb, "setsockopt(TCP_MIN_RTO)");
 }
 
 void set_debug(int fd, int onoff, struct callbacks *cb)
@@ -130,7 +136,7 @@ void set_local_host(int fd, struct options *opts, struct callbacks *cb)
         
         for (rp = result; rp; rp = rp->ai_next) {
                 if (bind(fd, rp->ai_addr, rp->ai_addrlen) == 0)
-                        doto done;
+                        goto done;
                 PLOG_ERROR(cb, "bind");
                 do_close(fd);
         }
