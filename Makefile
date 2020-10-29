@@ -36,4 +36,4 @@ $(LIB_DIR) : RUN
 RUN:
 
 clean:
-	rm -rf $(OBJ_DIR)/* $(BIN_DIR)/* $(TESTS_DIR)/*.log
+	rm -rf $(OBJ_DIR)/* $(BIN_DIR)/*
