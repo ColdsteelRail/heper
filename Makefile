@@ -18,7 +18,8 @@ lib := 	\
 	$(LIB_DIR)/percentiles.o \
 	$(LIB_DIR)/logging.o \
 	$(LIB_DIR)/numlist.o \
-	$(LIB_DIR)/common.o
+	$(LIB_DIR)/common.o \
+	$(LIB_DIR)/hexdump.o
 
 ext-libs := -lm -lpthread -lrt
 
